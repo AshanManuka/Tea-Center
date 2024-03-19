@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -95,6 +96,27 @@ public class CollectionServiceImpl implements CollectionService {
         }
 
     }
+
+    @Override
+    public ResponseEntity<?> deleteCollectionDetail(long collectionId) {
+        log.info("Checking is collection exists Id:{}", collectionId);
+        Collection collection = collectionRepository.getCollectionById(collectionId);
+        if (collection == null) {
+            log.info("No collection record found");
+            return ResponseEntity.ok(new CommonResponse<>(false, "No Collection Found"));
+        } else {
+            log.info("Deleting deduction records");
+            List<LeafDeduction> leafDeductionList = deductionRepository.getDeductionByCollection(collection.getId());
+            if (!leafDeductionList.isEmpty()) {
+                log.info("Deleting collection records");
+                deductionRepository.deleteAll(leafDeductionList);
+            }
+            collectionRepository.delete(collection);
+            return ResponseEntity.ok(new CommonResponse<>(true, "Record Deleted Successfully..!"));
+        }
+    }
+
+
 
 
 }

@@ -27,5 +27,11 @@ public class CollectionController {
         return collectionService.todayCollectionByRegNumber(regNo);
     }
 
+    @DeleteMapping(value = "/record")
+    public ResponseEntity<?> deleteCollection(@RequestParam long collectionId){
+        log.info("Delete Collection detail Id:{}",collectionId);
+        return collectionService.deleteCollectionDetail(collectionId);
+    }
+
 
 }
