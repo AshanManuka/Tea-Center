@@ -17,12 +17,12 @@ public class Collection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String name;
+    private Long registerNumber;
     private int trDay;
     private String trMonth;
     private Date trDate;
-    private long registerNumber;
     private String route;
-    private String name;
     private double qty;
     private String vehicle;
     private double trRate;
@@ -32,5 +32,6 @@ public class Collection {
     @Enumerated(value = EnumType.STRING)
     private Grade grade;
     private boolean sms;
+
 
 }

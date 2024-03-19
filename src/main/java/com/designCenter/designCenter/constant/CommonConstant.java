@@ -15,6 +15,9 @@ public class CommonConstant {
 
         public static final String EMAIL_ALREADY_EXIST = "This Email address already used..!";
         public static final String MOBILE_ALREADY_EXIST = "This mobile number already used..!";
+        public static final String NIC_ALREADY_EXIST = "This mobile number already used..!";
+        public static final String ACCOUNT_EXIST = "This mobile number already used..!";
+
     }
 
 
