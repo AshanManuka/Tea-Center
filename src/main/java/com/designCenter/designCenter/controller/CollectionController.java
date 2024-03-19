@@ -1,7 +1,6 @@
 package com.designCenter.designCenter.controller;
 
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
-import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.service.CollectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Log4j2
-@RequestMapping(value = "collection")
+@RequestMapping(value = "/collection")
 public class CollectionController {
 
     private final CollectionService collectionService;

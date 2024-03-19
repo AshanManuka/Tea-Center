@@ -1,9 +1,12 @@
 package com.designCenter.designCenter.filters;
 
+import com.designCenter.designCenter.dto.common.CommonResponse;
+import com.designCenter.designCenter.dto.common.CustomServiceException;
 import com.designCenter.designCenter.service.MyUserDetailsService;
 import com.designCenter.designCenter.util.JwlUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +39,6 @@ public class JwlRequestFilter extends OncePerRequestFilter {
             jwt = authorizationHeader.substring(7);
             username = jwlUtil.extractUsername(jwt);
         }
-
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 

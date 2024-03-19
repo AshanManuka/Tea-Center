@@ -3,27 +3,27 @@ package com.designCenter.designCenter.controller;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.customer.CustomerReqDto;
 import com.designCenter.designCenter.dto.customer.CustomerResDto;
+import com.designCenter.designCenter.enums.SearchType;
 import com.designCenter.designCenter.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @Log4j2
-@RequestMapping(value = "customer")
+@RequestMapping(value = "/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
 
 
     @GetMapping(value = "/search-by-other")
-    public ResponseEntity<?> searchByKeyWord(@RequestParam String keyword){
+    public ResponseEntity<?> searchByKeyWord(@RequestParam String keyword, @RequestParam SearchType type){
         log.info("Search Customer by keyword:{}",keyword);
-        return customerService.searchByKeyword(keyword);
+        return customerService.searchByKeyword(keyword,type);
     }
 
     @GetMapping(value = "/search")

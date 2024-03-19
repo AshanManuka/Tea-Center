@@ -25,6 +25,7 @@ public class CollectionResDto {
     private String vehicle;
     private double trRate;
     private double gross;
+    private double netGross;
     private String ws;
     private double incRate;
     private double commissionRate;

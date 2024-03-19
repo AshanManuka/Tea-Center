@@ -6,6 +6,7 @@ import com.designCenter.designCenter.dto.common.CustomServiceException;
 import com.designCenter.designCenter.dto.customer.CustomerReqDto;
 import com.designCenter.designCenter.dto.customer.CustomerResDto;
 import com.designCenter.designCenter.entity.Customer;
+import com.designCenter.designCenter.enums.SearchType;
 import com.designCenter.designCenter.repository.CustomerRepository;
 import com.designCenter.designCenter.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,9 +62,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ResponseEntity<?> searchByKeyword(String keyword) {
-        log.info("Searching Customers by Keyword:{}",keyword);
-        List<Customer> customerList = customerRepository.searchByKeyword(keyword);
+    public ResponseEntity<?> searchByKeyword(String keyword, SearchType type) {
+        List<Customer> customerList = new ArrayList<>();
+        log.info("Searching Customers by Keyword:{}",type);
+        if(type.equals(SearchType.NIC)){
+            customerList = customerRepository.searchByNic(keyword);
+        }else if(type.equals(SearchType.MOBILE)){
+            customerList = customerRepository.searchByMobile(keyword);
+        }
+
         if(customerList.isEmpty()){
             return ResponseEntity.ok(new CommonResponse<>(false,"Can't find any customer..!"));
         }
