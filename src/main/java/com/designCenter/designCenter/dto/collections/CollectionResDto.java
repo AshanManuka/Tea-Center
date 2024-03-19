@@ -1,9 +1,9 @@
-package com.designCenter.designCenter.entity;
+package com.designCenter.designCenter.dto.collections;
 
 import com.designCenter.designCenter.enums.Grade;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,13 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
-@Entity
-public class Collection {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@ToString
+public class CollectionResDto {
     private long id;
-
     private String name;
     private Long registerNumber;
     private int trDay;
@@ -28,16 +24,11 @@ public class Collection {
     private double qty;
     private String vehicle;
     private double trRate;
+    private double gross;
     private String ws;
     private double incRate;
-    private double gross;
-    private double netGross;
     private double commissionRate;
-    @Enumerated(value = EnumType.STRING)
     private Grade grade;
     private boolean sms;
-
-    @OneToMany(mappedBy = "collection")
-    private List<LeafDeduction> deductionList = new ArrayList<>();
-
+    List<DeductionResDto> deductions = new ArrayList<>();
 }

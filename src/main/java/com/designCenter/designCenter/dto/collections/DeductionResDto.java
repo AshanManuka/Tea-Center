@@ -1,23 +1,17 @@
-package com.designCenter.designCenter.entity;
+package com.designCenter.designCenter.dto.collections;
 
 import com.designCenter.designCenter.enums.DeductionType;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
-@Entity
-public class LeafDeduction {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@ToString
+public class DeductionResDto {
     private long id;
-
     private int trDay;
     private String trMonth;
     private Date trDate;
@@ -26,14 +20,5 @@ public class LeafDeduction {
     private String name;
     private double gross;
     private int deduct;
-
-    @Enumerated(value = EnumType.STRING)
     private DeductionType type;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = true)
-    private Collection collection;
-
-
-
 }

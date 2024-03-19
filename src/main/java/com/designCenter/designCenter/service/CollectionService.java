@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 public interface CollectionService {
 
     ResponseEntity<?> saveCollectionDetail(CollectionReqDto reqDto);
+
+    ResponseEntity<?> todayCollectionByRegNumber(long regNo);
 }

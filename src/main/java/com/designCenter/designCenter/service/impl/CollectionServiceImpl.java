@@ -2,6 +2,8 @@ package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.constant.CommonConstant;
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
+import com.designCenter.designCenter.dto.collections.CollectionResDto;
+import com.designCenter.designCenter.dto.collections.DeductionResDto;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
 import com.designCenter.designCenter.entity.Collection;
@@ -17,6 +19,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Log4j2
 @Service
@@ -28,6 +35,7 @@ public class CollectionServiceImpl implements CollectionService {
     private final CustomerRepository customerRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<?> saveCollectionDetail(CollectionReqDto reqDto) {
         log.info("Searching customer RegNum:{} is exists",reqDto.getRegisterNumber());
         Customer customer = customerRepository.findByRegisterNumber(reqDto.getRegisterNumber());
@@ -38,6 +46,7 @@ public class CollectionServiceImpl implements CollectionService {
         Collection collection = modelMapper.map(reqDto,Collection.class);
         collectionRepository.save(collection);
 
+        log.info("Saving deduction details for registerNumber:{}",reqDto.getRegisterNumber());
         reqDto.getDeductions().forEach(deductionReqDto -> {
             LeafDeduction deduction = LeafDeduction.builder()
                     .deduct(deductionReqDto.getDeduct())
@@ -49,10 +58,43 @@ public class CollectionServiceImpl implements CollectionService {
                     .trDay(reqDto.getTrDay())
                     .trMonth(reqDto.getTrMonth())
                     .type(deductionReqDto.getType())
+                    .collection(collection)
                     .build();
             deductionRepository.save(deduction);
         });
 
         return ResponseEntity.ok(new CommonResponse<>(true,"Collection Saved Successfully..!"));
     }
+
+    @Override
+    public ResponseEntity<?> todayCollectionByRegNumber(long regNo) {
+        log.info("Getting collection Details from Collection table to registerNumber:{}",regNo);
+        List<Collection> collectionList = collectionRepository.getTodayCollectionByRegNumber(regNo, new Date());
+        if(!collectionList.isEmpty()){
+            List<CollectionResDto> collectionResList = collectionList
+                    .stream()
+                    .map(collection -> {
+                        CollectionResDto resDto = modelMapper.map(collection,CollectionResDto.class);
+                        List<LeafDeduction> deductionList = deductionRepository.getDeductionByCollection(collection.getId());
+                        if(!deductionList.isEmpty()){
+                            List<DeductionResDto> deductionResList = deductionList
+                                    .stream()
+                                    .map(leafDeduction -> modelMapper.map(leafDeduction,DeductionResDto.class))
+                                    .collect(Collectors.toList());
+                            resDto.setDeductions(deductionResList);
+
+                        }
+                        return resDto;
+                    })
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new CommonResponse<>(true, collectionResList));
+
+        }else{
+            return ResponseEntity.ok(new CommonResponse<>(false, "Could not find any collection record today..!"));
+        }
+
+    }
+
+
 }
