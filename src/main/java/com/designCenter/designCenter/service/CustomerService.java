@@ -14,4 +14,6 @@ public interface CustomerService {
     ResponseEntity<?> searchByKeyword(String keyword, SearchType type);
 
     ResponseEntity<?> searchByRegisterNumber(long regNo);
+
+    ResponseEntity<?> searchById(long id);
 }

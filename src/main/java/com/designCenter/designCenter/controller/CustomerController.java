@@ -26,13 +26,17 @@ public class CustomerController {
         return customerService.searchByKeyword(keyword,type);
     }
 
+    @GetMapping(value = "/by-id")
+    public ResponseEntity<?> searchById(@RequestParam long id){
+        log.info("Search Customer by Id:{}",id);
+        return customerService.searchById(id);
+    }
+
     @GetMapping(value = "/search")
     public ResponseEntity<?> searchByRegisterNumber(@RequestParam long regNo){
         log.info("Search Customer by RegisterNumber:{}",regNo);
         return customerService.searchByRegisterNumber(regNo);
     }
-
-
 
     @PostMapping
     public ResponseEntity<?> saveCustomer(@RequestBody CustomerReqDto requestDto){

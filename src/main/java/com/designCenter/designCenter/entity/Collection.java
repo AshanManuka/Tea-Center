@@ -22,8 +22,9 @@ public class Collection {
     private String name;
     private Long registerNumber;
     private int trDay;
-    private String trMonth;
+    private int trMonth;
     private Date trDate;
+    private int trYear;
     private String route;
     private double qty;
     private String vehicle;

@@ -17,9 +17,10 @@ public class CollectionReqDto {
     private String name;
     private Long registerNumber;
     private int trDay;
-    private String trMonth;
+    private int trMonth;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date trDate;
+    private int trYear;
     private String route;
     private double qty;
     private String vehicle;

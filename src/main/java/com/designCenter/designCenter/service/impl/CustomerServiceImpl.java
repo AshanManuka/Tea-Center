@@ -95,5 +95,16 @@ public class CustomerServiceImpl implements CustomerService {
         return ResponseEntity.ok(new CommonResponse<>(true, response));
     }
 
+    @Override
+    public ResponseEntity<?> searchById(long id) {
+        log.info("Searching Customer by Id:{}",id);
+        Customer customer = customerRepository.getCustomerById(id);
+        if(customer == null){
+            return ResponseEntity.ok(new CommonResponse<>(false, "No User found..!"));
+        }
+        CustomerResDto response = modelMapper.map(customer,CustomerResDto.class);
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
+    }
+
 
 }

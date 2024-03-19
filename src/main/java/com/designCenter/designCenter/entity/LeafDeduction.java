@@ -19,7 +19,7 @@ public class LeafDeduction {
     private long id;
 
     private int trDay;
-    private String trMonth;
+    private int trMonth;
     private Date trDate;
     private long registerNumber;
     private String route;
