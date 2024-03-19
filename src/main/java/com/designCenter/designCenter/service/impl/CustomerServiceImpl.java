@@ -11,6 +11,7 @@ import com.designCenter.designCenter.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -59,24 +60,31 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResDto> searchByKeyword(String keyword) {
+    public ResponseEntity<?> searchByKeyword(String keyword) {
         log.info("Searching Customers by Keyword:{}",keyword);
         List<Customer> customerList = customerRepository.searchByKeyword(keyword);
-        if(customerList.isEmpty()) throw new CustomServiceException(CommonConstant.NotFoundConstants.NO_USER_FOUND);
+        if(customerList.isEmpty()){
+            return ResponseEntity.ok(new CommonResponse<>(false,"Can't find any customer..!"));
+        }
 
-        return customerList
+        List<CustomerResDto> responseList = customerList
                 .stream()
                 .map(customer ->modelMapper.map(customer,CustomerResDto.class))
                 .collect(Collectors.toList());
 
+        return ResponseEntity.ok(new CommonResponse<>(true,responseList));
+
     }
 
     @Override
-    public CustomerResDto searchByRegisterNumber(long regNo) {
+    public ResponseEntity<?> searchByRegisterNumber(long regNo) {
         log.info("Searching Customer by RegisterNumber:{}",regNo);
         Customer customer = customerRepository.findByRegisterNumber(regNo);
-        if(customer == null) throw new CustomServiceException(CommonConstant.NotFoundConstants.NO_USER_FOUND);
-        return modelMapper.map(customer,CustomerResDto.class);
+        if(customer == null){
+            return ResponseEntity.ok(new CommonResponse<>(false, "No User found..!"));
+        }
+        CustomerResDto response = modelMapper.map(customer,CustomerResDto.class);
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
     }
 
 

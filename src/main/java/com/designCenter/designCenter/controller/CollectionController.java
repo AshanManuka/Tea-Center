@@ -22,8 +22,7 @@ public class CollectionController {
     @PostMapping
     public ResponseEntity<?> saveCollection(@RequestBody CollectionReqDto reqDto){
         log.info("Save Collection details of customerName:{}",reqDto.getName());
-        collectionService.saveCollectionDetail(reqDto);
-        return ResponseEntity.ok(new CommonResponse<>(true,"Collection Saved Successfully..!"));
+        return collectionService.saveCollectionDetail(reqDto);
     }
 
 

@@ -38,14 +38,14 @@ public class PublicController {
                     new UsernamePasswordAuthenticationToken(authRequest.getUserName(),authRequest.getPassword())
             );
         }catch (BadCredentialsException exception){
-            throw new Exception("Incorrect UserName or Password -> ",exception);
+            return ResponseEntity.ok(new CommonResponse<>(false, "Incorrect Username or Password"));
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUserName());
 
         final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(new CommonResponse<>(true,new AuthenticationResponse(jwt)));
 
     }
 

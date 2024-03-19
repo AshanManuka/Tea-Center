@@ -2,6 +2,7 @@ package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.constant.CommonConstant;
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
+import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
 import com.designCenter.designCenter.entity.Collection;
 import com.designCenter.designCenter.entity.Customer;
@@ -13,6 +14,7 @@ import com.designCenter.designCenter.service.CollectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -26,10 +28,12 @@ public class CollectionServiceImpl implements CollectionService {
     private final CustomerRepository customerRepository;
 
     @Override
-    public void saveCollectionDetail(CollectionReqDto reqDto) {
+    public ResponseEntity<?> saveCollectionDetail(CollectionReqDto reqDto) {
         log.info("Searching customer RegNum:{} is exists",reqDto.getRegisterNumber());
         Customer customer = customerRepository.findByRegisterNumber(reqDto.getRegisterNumber());
-        if(customer == null) throw new CustomServiceException(CommonConstant.NotFoundConstants.NO_USER_FOUND);
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
 
         Collection collection = modelMapper.map(reqDto,Collection.class);
         collectionRepository.save(collection);
@@ -48,5 +52,7 @@ public class CollectionServiceImpl implements CollectionService {
                     .build();
             deductionRepository.save(deduction);
         });
+
+        return ResponseEntity.ok(new CommonResponse<>(true,"Collection Saved Successfully..!"));
     }
 }

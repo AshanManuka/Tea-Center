@@ -23,15 +23,13 @@ public class CustomerController {
     @GetMapping(value = "/search-by-other")
     public ResponseEntity<?> searchByKeyWord(@RequestParam String keyword){
         log.info("Search Customer by keyword:{}",keyword);
-        List<CustomerResDto> responseList = customerService.searchByKeyword(keyword);
-        return ResponseEntity.ok(new CommonResponse<>(true,responseList));
+        return customerService.searchByKeyword(keyword);
     }
 
     @GetMapping(value = "/search")
     public ResponseEntity<?> searchByRegisterNumber(@RequestParam long regNo){
         log.info("Search Customer by RegisterNumber:{}",regNo);
-        CustomerResDto response = customerService.searchByRegisterNumber(regNo);
-        return ResponseEntity.ok(new CommonResponse<>(true,response));
+        return customerService.searchByRegisterNumber(regNo);
     }
 
 

@@ -1,8 +1,9 @@
 package com.designCenter.designCenter.service;
 
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
+import org.springframework.http.ResponseEntity;
 
 public interface CollectionService {
 
-    void saveCollectionDetail(CollectionReqDto reqDto);
+    ResponseEntity<?> saveCollectionDetail(CollectionReqDto reqDto);
 }
