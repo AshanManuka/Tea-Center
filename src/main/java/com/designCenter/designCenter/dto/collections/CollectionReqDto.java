@@ -1,38 +1,34 @@
-package com.designCenter.designCenter.entity;
+package com.designCenter.designCenter.dto.collections;
 
 import com.designCenter.designCenter.enums.Grade;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
-@Entity
-public class Collection {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+@ToString
+public class CollectionReqDto {
     private String name;
     private Long registerNumber;
     private int trDay;
     private String trMonth;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
     private Date trDate;
     private String route;
     private double qty;
     private String vehicle;
     private double trRate;
+    private double gross;
     private String ws;
     private double incRate;
-    private double gross;
     private double commissionRate;
-    @Enumerated(value = EnumType.STRING)
     private Grade grade;
     private boolean sms;
-
-
+    List<DeductionReqDto> deductions = new ArrayList<>();
 }

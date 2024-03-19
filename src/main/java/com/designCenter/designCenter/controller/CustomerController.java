@@ -36,8 +36,6 @@ public class CustomerController {
 
 
 
-
-
     @PostMapping
     public ResponseEntity<?> saveCustomer(@RequestBody CustomerReqDto requestDto){
         log.info("Saving new customer Details NIC:{}",requestDto.getNic());
