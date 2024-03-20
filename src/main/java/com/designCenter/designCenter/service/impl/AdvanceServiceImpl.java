@@ -1,8 +1,10 @@
 package com.designCenter.designCenter.service.impl;
 
+import com.designCenter.designCenter.dto.advance.AdvanceReqDto;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.customer.BriefRecordResDto;
 import com.designCenter.designCenter.dto.customer.CustomerResDto;
+import com.designCenter.designCenter.entity.Advance;
 import com.designCenter.designCenter.entity.Customer;
 import com.designCenter.designCenter.repository.AdvanceRepository;
 import com.designCenter.designCenter.repository.CollectionRepository;
@@ -70,5 +72,17 @@ public class AdvanceServiceImpl implements AdvanceService {
         }
 
         return ResponseEntity.ok(new CommonResponse<>(true, response));
+    }
+
+    @Override
+    public ResponseEntity<?> createAdvance(AdvanceReqDto reqDto) {
+        log.info("Searching Customer by RegisterNumber:{}",reqDto.getRegisterNumber());
+        Customer customer = customerRepository.findByRegisterNumber(reqDto.getRegisterNumber());
+        if(customer == null){
+            return ResponseEntity.ok(new CommonResponse<>(false, "No User found..!"));
+        }
+        Advance advance = modelMapper.map(reqDto,Advance.class);
+        advanceRepository.save(advance);
+        return ResponseEntity.ok(new CommonResponse<>(true, "Successfully Saved Advance Record..!..!"));
     }
 }
