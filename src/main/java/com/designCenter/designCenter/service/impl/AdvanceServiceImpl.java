@@ -89,14 +89,14 @@ public class AdvanceServiceImpl implements AdvanceService {
     }
 
     @Override
-    public ResponseEntity<?> getTodayAdvanceDetails(long regNo) {
+    public ResponseEntity<?> getTodayAdvanceDetails(long regNo, Date issueDate) {
         log.info("Searching Customer by RegisterNumber:{}",regNo);
         Customer customer = customerRepository.findByRegisterNumber(regNo);
         if(customer == null){
             return ResponseEntity.ok(new CommonResponse<>(false, "No User found..!"));
         }
 
-        List<Advance> advanceList = advanceRepository.getTodayAdvanceByRegNo(regNo,new Date());
+        List<Advance> advanceList = advanceRepository.getTodayAdvanceByRegNo(regNo,issueDate);
         if(!advanceList.isEmpty()){
             List<AdvanceResDto> responseList = advanceList
                     .stream()
@@ -105,7 +105,7 @@ public class AdvanceServiceImpl implements AdvanceService {
 
             return ResponseEntity.ok(new CommonResponse<>(true, responseList));
         }else{
-            return ResponseEntity.ok(new CommonResponse<>(false, "No any Records in Today..!"));
+            return ResponseEntity.ok(new CommonResponse<>(false, "No any Records in Entered Date..!"));
         }
 
     }
@@ -113,7 +113,7 @@ public class AdvanceServiceImpl implements AdvanceService {
     @Override
     public ResponseEntity<?> deleteSingleAdvanceRecord(long id) {
         log.info("Checking is record exists in table");
-        Advance advance = advanceRepository.getAdvanceById(id);
+        Advance advance = advanceRepository.getTodayAdvanceById(id,new Date());
         if(advance == null){
             return ResponseEntity.ok(new CommonResponse<>(false, "Cannot find in advance record..!"));
         }else{

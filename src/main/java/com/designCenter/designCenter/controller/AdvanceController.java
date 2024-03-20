@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/advance")
@@ -27,10 +29,10 @@ public class AdvanceController {
         return advanceService.createAdvance(reqDto);
     }
 
-    @GetMapping(value = "/today")
-    public ResponseEntity<?> getTodayAdvanceDetailsByByRegNo(@RequestParam long regNo){
-        log.info("Get advance details of registerNumber:{}",regNo);
-        return advanceService.getTodayAdvanceDetails(regNo);
+    @GetMapping(value = "/by-date")
+    public ResponseEntity<?> getTodayAdvanceDetailsByByRegNo(@RequestParam long regNo, @RequestParam Date issueDate){
+        log.info("Get advance details of registerNumber:{} in date:{}",regNo,issueDate);
+        return advanceService.getTodayAdvanceDetails(regNo,issueDate);
     }
 
     @DeleteMapping(value = "/single")
