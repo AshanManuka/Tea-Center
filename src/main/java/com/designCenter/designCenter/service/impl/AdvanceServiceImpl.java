@@ -7,6 +7,7 @@ import com.designCenter.designCenter.dto.customer.BriefRecordResDto;
 import com.designCenter.designCenter.dto.customer.CustomerResDto;
 import com.designCenter.designCenter.entity.Advance;
 import com.designCenter.designCenter.entity.Customer;
+import com.designCenter.designCenter.enums.TrType;
 import com.designCenter.designCenter.repository.AdvanceRepository;
 import com.designCenter.designCenter.repository.CollectionRepository;
 import com.designCenter.designCenter.repository.CustomerRepository;
@@ -85,6 +86,11 @@ public class AdvanceServiceImpl implements AdvanceService {
         }
         Advance advance = modelMapper.map(reqDto,Advance.class);
         advanceRepository.save(advance);
+        if(reqDto.getTrType().equals(TrType.FERTILIZER)){
+            //devide in to installment
+            //create new installment table
+            //save
+        }
         return ResponseEntity.ok(new CommonResponse<>(true, "Successfully Saved Advance Record..!..!"));
     }
 

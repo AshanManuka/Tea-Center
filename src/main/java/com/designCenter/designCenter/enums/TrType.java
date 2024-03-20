@@ -1,5 +1,5 @@
 package com.designCenter.designCenter.enums;
 
 public enum TrType {
-    TEA, FERTILIZER
+    TEA, FERTILIZER, DOLOMITE, CHEMICAL, RICE
 }

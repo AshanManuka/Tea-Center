@@ -21,4 +21,5 @@ public class AdvanceReqDto {
     private String registerName;
     private double amount;
     private TrType trType;
+    private int installmentCount;
 }
