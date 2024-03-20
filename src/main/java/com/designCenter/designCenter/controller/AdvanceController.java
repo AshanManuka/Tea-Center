@@ -33,6 +33,12 @@ public class AdvanceController {
         return advanceService.getTodayAdvanceDetails(regNo);
     }
 
+    @DeleteMapping(value = "/single")
+    public ResponseEntity<?> deleteAdvanceRecordById(@RequestParam long id){
+        log.info("Delete advance record by Id:{}",id);
+        return advanceService.deleteSingleAdvanceRecord(id);
+    }
+
 
 
 

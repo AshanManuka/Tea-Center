@@ -110,5 +110,18 @@ public class AdvanceServiceImpl implements AdvanceService {
 
     }
 
+    @Override
+    public ResponseEntity<?> deleteSingleAdvanceRecord(long id) {
+        log.info("Checking is record exists in table");
+        Advance advance = advanceRepository.getAdvanceById(id);
+        if(advance == null){
+            return ResponseEntity.ok(new CommonResponse<>(false, "Cannot find in advance record..!"));
+        }else{
+            advanceRepository.delete(advance);
+            return ResponseEntity.ok(new CommonResponse<>(true, "Deleted Record Successfully..!"));
+        }
+
+    }
+
 
 }

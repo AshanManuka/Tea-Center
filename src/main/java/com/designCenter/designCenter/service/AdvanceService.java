@@ -10,4 +10,6 @@ public interface AdvanceService {
     ResponseEntity<?> createAdvance(AdvanceReqDto reqDto);
 
     ResponseEntity<?> getTodayAdvanceDetails(long regNo);
+
+    ResponseEntity<?> deleteSingleAdvanceRecord(long id);
 }
