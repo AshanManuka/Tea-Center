@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface AdvanceRepository extends JpaRepository<Advance,Long> {
 
-    @Query(value = "SELECT * FROM Advance WHERE register_number=?1 AND DATE(issue_date)=DATE(?2)", nativeQuery=true)
+    @Query(value = "SELECT * FROM advance WHERE register_number=?1 AND DATE(issue_date)=DATE(?2)", nativeQuery=true)
     List<Advance> getTodayAdvanceByRegNo(long regNo, Date date);
 
     @Query(value = "SELECT a FROM Advance a WHERE a.id=?1")
     Advance getAdvanceById(long id);
 
-    @Query(value = "SELECT * FROM Advance WHERE id=?1 AND DATE(issue_date)=DATE(?2)", nativeQuery=true)
+    @Query(value = "SELECT * FROM advance WHERE id=?1 AND DATE(issue_date)=DATE(?2)", nativeQuery=true)
     Advance getTodayAdvanceById(long id, Date date);
 }

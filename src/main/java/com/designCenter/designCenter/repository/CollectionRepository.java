@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CollectionRepository extends JpaRepository<Collection,Long> {
 
-    @Query(value = "SELECT * FROM Collection WHERE register_number=?1 AND DATE(tr_date)=DATE(?2)", nativeQuery=true)
+    @Query(value = "SELECT * FROM collection WHERE register_number=?1 AND DATE(tr_date)=DATE(?2)", nativeQuery=true)
     List<Collection> getTodayCollectionByRegNumber(long regNo, Date date);
 
     @Query(value ="SELECT c FROM Collection c WHERE c.id=?1")
