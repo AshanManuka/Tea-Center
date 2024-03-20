@@ -1,6 +1,7 @@
 package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.dto.advance.AdvanceReqDto;
+import com.designCenter.designCenter.dto.advance.AdvanceResDto;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.customer.BriefRecordResDto;
 import com.designCenter.designCenter.dto.customer.CustomerResDto;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -85,4 +87,28 @@ public class AdvanceServiceImpl implements AdvanceService {
         advanceRepository.save(advance);
         return ResponseEntity.ok(new CommonResponse<>(true, "Successfully Saved Advance Record..!..!"));
     }
+
+    @Override
+    public ResponseEntity<?> getTodayAdvanceDetails(long regNo) {
+        log.info("Searching Customer by RegisterNumber:{}",regNo);
+        Customer customer = customerRepository.findByRegisterNumber(regNo);
+        if(customer == null){
+            return ResponseEntity.ok(new CommonResponse<>(false, "No User found..!"));
+        }
+
+        List<Advance> advanceList = advanceRepository.getTodayAdvanceByRegNo(regNo,new Date());
+        if(!advanceList.isEmpty()){
+            List<AdvanceResDto> responseList = advanceList
+                    .stream()
+                    .map(advance -> modelMapper.map(advance,AdvanceResDto.class))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new CommonResponse<>(true, responseList));
+        }else{
+            return ResponseEntity.ok(new CommonResponse<>(false, "No any Records in Today..!"));
+        }
+
+    }
+
+
 }

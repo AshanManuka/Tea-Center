@@ -27,6 +27,12 @@ public class AdvanceController {
         return advanceService.createAdvance(reqDto);
     }
 
+    @GetMapping(value = "/today")
+    public ResponseEntity<?> getTodayAdvanceDetailsByByRegNo(@RequestParam long regNo){
+        log.info("Get advance details of registerNumber:{}",regNo);
+        return advanceService.getTodayAdvanceDetails(regNo);
+    }
+
 
 
 

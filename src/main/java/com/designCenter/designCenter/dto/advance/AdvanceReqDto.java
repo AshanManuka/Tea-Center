@@ -13,9 +13,9 @@ import java.util.Date;
 @ToString
 public class AdvanceReqDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private Date trDate;
+    private Date effectedDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd")
-    private Date logDate;
+    private Date issueDate;
     private long registerNumber;
     private String route;
     private String registerName;

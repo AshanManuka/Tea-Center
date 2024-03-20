@@ -8,4 +8,6 @@ public interface AdvanceService {
     ResponseEntity<?> getRecordByRegNumber(long regNo);
 
     ResponseEntity<?> createAdvance(AdvanceReqDto reqDto);
+
+    ResponseEntity<?> getTodayAdvanceDetails(long regNo);
 }
