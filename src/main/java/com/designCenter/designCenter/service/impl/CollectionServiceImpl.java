@@ -1,6 +1,7 @@
 package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.constant.CommonConstant;
+import com.designCenter.designCenter.dto.collections.BasicCollectionResDto;
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
 import com.designCenter.designCenter.dto.collections.CollectionResDto;
 import com.designCenter.designCenter.dto.collections.DeductionResDto;
@@ -116,7 +117,20 @@ public class CollectionServiceImpl implements CollectionService {
         }
     }
 
-
+    @Override
+    public ResponseEntity<?> getTodayAllCollection(Date today) {
+        log.info("Getting all collections in today");
+        List<Collection> collectionList = collectionRepository.getTodayAllCollection(today);
+        if(collectionList.isEmpty()){
+            return ResponseEntity.ok(new CommonResponse<>(false, "No Collection Found"));
+        }else{
+            List<BasicCollectionResDto> responseList = collectionList
+                    .stream()
+                    .map(collection -> modelMapper.map(collection,BasicCollectionResDto.class))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(new CommonResponse<>(true, responseList));
+        }
+    }
 
 
 }

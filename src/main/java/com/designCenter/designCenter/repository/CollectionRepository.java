@@ -19,4 +19,6 @@ public interface CollectionRepository extends JpaRepository<Collection,Long> {
     @Query(value = "SELECT c.netGross FROM Collection c WHERE c.trYear=:currentYear AND c.trMonth=:currentMonth")
     List<Double> getAllNetGrossByMonth(@Param("currentYear") int currentYear, @Param("currentMonth") int currentMonth);
 
+    @Query(value = "SELECT * FROM collection WHERE DATE(tr_date)=DATE(?1)", nativeQuery=true)
+    List<Collection> getTodayAllCollection(Date today);
 }

@@ -7,6 +7,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 @RequiredArgsConstructor
 @Log4j2
@@ -32,6 +34,14 @@ public class CollectionController {
         log.info("Delete Collection detail Id:{}",collectionId);
         return collectionService.deleteCollectionDetail(collectionId);
     }
+
+    @GetMapping(value = "today-all")
+    public ResponseEntity<?> getTodayAllCollection(@RequestParam Date today){
+        log.info("Get Today all collection");
+        return collectionService.getTodayAllCollection(today);
+    }
+
+
 
 
 }
