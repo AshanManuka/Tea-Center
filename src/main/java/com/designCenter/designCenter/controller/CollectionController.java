@@ -41,6 +41,12 @@ public class CollectionController {
         return collectionService.getTodayAllCollection(today);
     }
 
+    @GetMapping(value = "two-month")
+    public ResponseEntity<?> getLastMonthsCollection(@RequestParam long regNo){
+        log.info("Get all collection in last Two month of RegisterNumber:{}",regNo);
+        return collectionService.getLastTwoMonthCollection(regNo);
+    }
+
 
 
 

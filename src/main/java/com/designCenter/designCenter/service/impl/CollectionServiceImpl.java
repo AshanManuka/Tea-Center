@@ -1,10 +1,7 @@
 package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.constant.CommonConstant;
-import com.designCenter.designCenter.dto.collections.BasicCollectionResDto;
-import com.designCenter.designCenter.dto.collections.CollectionReqDto;
-import com.designCenter.designCenter.dto.collections.CollectionResDto;
-import com.designCenter.designCenter.dto.collections.DeductionResDto;
+import com.designCenter.designCenter.dto.collections.*;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
 import com.designCenter.designCenter.entity.Collection;
@@ -21,9 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -130,6 +125,34 @@ public class CollectionServiceImpl implements CollectionService {
                     .collect(Collectors.toList());
             return ResponseEntity.ok(new CommonResponse<>(true, responseList));
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getLastTwoMonthCollection(long regNo) {
+        log.info("Searching customer RegNum:{} is exists",regNo);
+        Customer customer = customerRepository.findByRegisterNumber(regNo);
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
+        log.info("Getting all collection in last Two month of RegisterNumber:{}",regNo);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        List<Double> currentMonthWeight = collectionRepository.getWeightOfMonth(currentYear,currentMonth);
+        List<Double> lastMonthWeight = new ArrayList<>();
+        if(currentMonth == 1){
+            lastMonthWeight = collectionRepository.getWeightOfMonth(currentYear - 1,12);
+        }else{
+            lastMonthWeight = collectionRepository.getWeightOfMonth(currentYear,currentMonth-1);
+        }
+
+        TwoMonthWeightResDto response = new TwoMonthWeightResDto(customer.getRegisterNumber(), currentMonthWeight, lastMonthWeight);
+
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
     }
 
 
