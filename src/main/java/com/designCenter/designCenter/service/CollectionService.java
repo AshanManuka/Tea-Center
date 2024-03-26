@@ -20,4 +20,8 @@ public interface CollectionService {
     ResponseEntity<?> getCollectionDataInLastTwoMonth(long regNo);
 
     ResponseEntity<?> getDeductionDataInLastTwoMonth(long regNo);
+
+    ResponseEntity<?> getCollectionDetailByDate(Date date);
+
+    ResponseEntity<?> getDeductionDetailByDate(Date date);
 }

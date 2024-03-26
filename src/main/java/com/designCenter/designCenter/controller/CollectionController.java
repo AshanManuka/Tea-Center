@@ -59,6 +59,18 @@ public class CollectionController {
         return collectionService.getDeductionDataInLastTwoMonth(regNo);
     }
 
+    @GetMapping(value = "/all-by-date")
+    public ResponseEntity<?> getAllCollectionDetailsByDate(@RequestParam Date date){
+        log.info("Get collection details by date:{}",date);
+        return collectionService.getCollectionDetailByDate(date);
+    }
+
+    @GetMapping(value = "/deduction/all-by-date")
+    public ResponseEntity<?> getAllDeductionDetailsByDate(@RequestParam Date date){
+        log.info("Get Deduction details by date:{}",date);
+        return collectionService.getDeductionDetailByDate(date);
+    }
+
 
 
 

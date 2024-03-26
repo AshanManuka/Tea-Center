@@ -1,9 +1,11 @@
 package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.constant.CommonConstant;
+import com.designCenter.designCenter.dto.advance.BasicAdvanceResDto;
 import com.designCenter.designCenter.dto.collections.*;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
+import com.designCenter.designCenter.entity.Advance;
 import com.designCenter.designCenter.entity.Collection;
 import com.designCenter.designCenter.entity.Customer;
 import com.designCenter.designCenter.entity.LeafDeduction;
@@ -210,6 +212,36 @@ public class CollectionServiceImpl implements CollectionService {
         return ResponseEntity.ok(new CommonResponse<>(true, response));
 
 
+    }
+
+    @Override
+    public ResponseEntity<?> getCollectionDetailByDate(Date date) {
+        log.info("Getting collection details by date: {}",date);
+        List<Collection> responseList = collectionRepository.getCollectionByDate(date);
+        if(!responseList.isEmpty()){
+            List<SimpleCollectionTwoResDto> response = responseList
+                    .stream()
+                    .map(collection -> modelMapper.map(collection,SimpleCollectionTwoResDto.class))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(new CommonResponse<>(true, response));
+        }
+
+        return ResponseEntity.ok(new CommonResponse<>(true, "Empty Result"));
+    }
+
+    @Override
+    public ResponseEntity<?> getDeductionDetailByDate(Date date) {
+        log.info("Getting deduction details by date: {}",date);
+        List<LeafDeduction> responseList = deductionRepository.getDeductionByDate(date);
+        if(!responseList.isEmpty()){
+            List<BasicTwoDeductionResDto> response = responseList
+                    .stream()
+                    .map(deduction -> modelMapper.map(deduction,BasicTwoDeductionResDto.class))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(new CommonResponse<>(true, response));
+        }
+
+        return ResponseEntity.ok(new CommonResponse<>(true, "Empty Result"));
     }
 
 

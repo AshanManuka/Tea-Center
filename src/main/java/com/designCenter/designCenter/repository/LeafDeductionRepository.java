@@ -18,4 +18,7 @@ public interface LeafDeductionRepository extends JpaRepository<LeafDeduction,Lon
 
     @Query(value = "SELECT new com.designCenter.designCenter.dto.collections.BasicDeductionResDto(d.id, d.trDate, d.gross, d.deduct, d.type)  FROM LeafDeduction d WHERE d.trYear=?1 AND d.trMonth=?2")
     List<BasicDeductionResDto> getDeductionOfMonth(int currentYear, int currentMonth);
+
+    @Query(value = "SELECT * FROM leaf_deduction WHERE DATE(tr_date)=DATE(?1)",nativeQuery=true)
+    List<LeafDeduction> getDeductionByDate(Date date);
 }

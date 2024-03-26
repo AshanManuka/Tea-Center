@@ -28,4 +28,7 @@ public interface CollectionRepository extends JpaRepository<Collection,Long> {
 
     @Query(value = "SELECT new com.designCenter.designCenter.dto.collections.SimpleCollectionResDto(c.id, c.trDate, c.qty, c.grade) FROM Collection c WHERE c.trYear=?1 AND c.trMonth=?2")
     List<SimpleCollectionResDto> getCollectionOfMonth(int currentYear, int currentMonth);
+
+    @Query(value = "SELECT * FROM collection WHERE DATE(tr_date)=DATE(?1)",nativeQuery=true)
+    List<Collection> getCollectionByDate(Date date);
 }

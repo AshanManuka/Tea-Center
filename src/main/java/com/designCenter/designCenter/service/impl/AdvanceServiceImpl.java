@@ -1,9 +1,6 @@
 package com.designCenter.designCenter.service.impl;
 
-import com.designCenter.designCenter.dto.advance.AdvanceReqDto;
-import com.designCenter.designCenter.dto.advance.AdvanceResDto;
-import com.designCenter.designCenter.dto.advance.BasicAdvanceResDto;
-import com.designCenter.designCenter.dto.advance.TwoMonthAdvanceResDto;
+import com.designCenter.designCenter.dto.advance.*;
 import com.designCenter.designCenter.dto.collections.BasicDeductionResDto;
 import com.designCenter.designCenter.dto.collections.TwoMonthDeductionResDto;
 import com.designCenter.designCenter.dto.common.CommonResponse;
@@ -175,9 +172,9 @@ public class AdvanceServiceImpl implements AdvanceService {
         log.info("Getting advance details by date: {}",issueDate);
         List<Advance> responseList = advanceRepository.getAdvanceByDate(issueDate);
         if(!responseList.isEmpty()){
-            List<BasicAdvanceResDto> response = responseList
+            List<BasicTwoAdvanceResDto> response = responseList
                     .stream()
-                    .map(advance -> modelMapper.map(advance,BasicAdvanceResDto.class))
+                    .map(advance -> modelMapper.map(advance,BasicTwoAdvanceResDto.class))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(new CommonResponse<>(true, response));
         }
