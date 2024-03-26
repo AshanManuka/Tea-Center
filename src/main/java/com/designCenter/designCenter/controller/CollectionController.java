@@ -35,16 +35,22 @@ public class CollectionController {
         return collectionService.deleteCollectionDetail(collectionId);
     }
 
-    @GetMapping(value = "today-all")
+    @GetMapping(value = "/today-all")
     public ResponseEntity<?> getTodayAllCollection(@RequestParam Date today){
         log.info("Get Today all collection");
         return collectionService.getTodayAllCollection(today);
     }
 
-    @GetMapping(value = "two-month")
+    @GetMapping(value = "/two-month-weight")
     public ResponseEntity<?> getLastMonthsCollection(@RequestParam long regNo){
-        log.info("Get all collection in last Two month of RegisterNumber:{}",regNo);
+        log.info("Get all collection Weight in last Two month of RegisterNumber:{}",regNo);
         return collectionService.getLastTwoMonthCollection(regNo);
+    }
+
+    @GetMapping(value = "/two-month")
+    public ResponseEntity<?> getCollectionDataInLastTwoMonth(@RequestParam long regNo){
+        log.info("Get all basic collection Data in last Two month of RegisterNumber:{}",regNo);
+        return collectionService.getCollectionDataInLastTwoMonth(regNo);
     }
 
 

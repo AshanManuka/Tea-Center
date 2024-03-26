@@ -1,5 +1,6 @@
 package com.designCenter.designCenter.repository;
 
+import com.designCenter.designCenter.dto.collections.SimpleCollectionResDto;
 import com.designCenter.designCenter.entity.Collection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,7 @@ public interface CollectionRepository extends JpaRepository<Collection,Long> {
 
     @Query(value = "SELECT c.netGross FROM Collection c WHERE c.trYear=?1 AND c.trMonth=?2")
     List<Double> getWeightOfMonth(int currentYear, int currentMonth);
+
+    @Query(value = "SELECT new com.designCenter.designCenter.dto.collections.SimpleCollectionResDto(c.id, c.trDate, c.qty, c.grade) FROM Collection c WHERE c.trYear=?1 AND c.trMonth=?2")
+    List<SimpleCollectionResDto> getCollectionOfMonth(int currentYear, int currentMonth);
 }

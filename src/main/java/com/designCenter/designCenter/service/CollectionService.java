@@ -16,4 +16,6 @@ public interface CollectionService {
     ResponseEntity<?> getTodayAllCollection(Date today);
 
     ResponseEntity<?> getLastTwoMonthCollection(long regNo);
+
+    ResponseEntity<?> getCollectionDataInLastTwoMonth(long regNo);
 }

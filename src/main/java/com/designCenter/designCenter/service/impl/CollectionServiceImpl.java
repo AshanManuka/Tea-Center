@@ -155,5 +155,32 @@ public class CollectionServiceImpl implements CollectionService {
         return ResponseEntity.ok(new CommonResponse<>(true, response));
     }
 
+    @Override
+    public ResponseEntity<?> getCollectionDataInLastTwoMonth(long regNo) {
+        log.info("Searching customer RegNum:{} is exists",regNo);
+        Customer customer = customerRepository.findByRegisterNumber(regNo);
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
+        log.info("Getting all collection data in last Two month of RegisterNumber:{}",regNo);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        List<SimpleCollectionResDto> currentMonthData = collectionRepository.getCollectionOfMonth(currentYear,currentMonth);
+        List<SimpleCollectionResDto> lastMonthData = new ArrayList<>();
+        if(currentMonth == 1){
+            lastMonthData = collectionRepository.getCollectionOfMonth(currentYear - 1,12);
+        }else{
+            lastMonthData = collectionRepository.getCollectionOfMonth(currentYear,currentMonth-1);
+        }
+
+        TwoMonthDataResDto response = new TwoMonthDataResDto(customer.getRegisterNumber(),currentMonthData,lastMonthData);
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
+    }
+
 
 }
