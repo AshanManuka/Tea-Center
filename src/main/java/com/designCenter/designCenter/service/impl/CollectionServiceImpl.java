@@ -54,6 +54,7 @@ public class CollectionServiceImpl implements CollectionService {
                     .trDate(reqDto.getTrDate())
                     .trDay(reqDto.getTrDay())
                     .trMonth(reqDto.getTrMonth())
+                    .trYear(reqDto.getTrYear())
                     .type(deductionReqDto.getType())
                     .collection(collection)
                     .build();
@@ -180,6 +181,35 @@ public class CollectionServiceImpl implements CollectionService {
 
         TwoMonthDataResDto response = new TwoMonthDataResDto(customer.getRegisterNumber(),currentMonthData,lastMonthData);
         return ResponseEntity.ok(new CommonResponse<>(true, response));
+    }
+
+    @Override
+    public ResponseEntity<?> getDeductionDataInLastTwoMonth(long regNo) {
+        log.info("Searching customer RegNum:{} is exists",regNo);
+        Customer customer = customerRepository.findByRegisterNumber(regNo);
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
+        log.info("Getting all deduction data in last Two month of RegisterNumber:{}",regNo);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        List<BasicDeductionResDto> currentMonthData = deductionRepository.getDeductionOfMonth(currentYear,currentMonth);
+        List<BasicDeductionResDto> lastMonthData = new ArrayList<>();
+        if(currentMonth == 1){
+            lastMonthData = deductionRepository.getDeductionOfMonth(currentYear - 1,12);
+        }else{
+            lastMonthData = deductionRepository.getDeductionOfMonth(currentYear,currentMonth-1);
+        }
+
+        TwoMonthDeductionResDto response = new TwoMonthDeductionResDto(customer.getRegisterNumber(), currentMonthData, lastMonthData);
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
+
+
     }
 
 

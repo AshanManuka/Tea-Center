@@ -1,5 +1,6 @@
 package com.designCenter.designCenter.repository;
 
+import com.designCenter.designCenter.dto.collections.BasicDeductionResDto;
 import com.designCenter.designCenter.entity.LeafDeduction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,7 @@ public interface LeafDeductionRepository extends JpaRepository<LeafDeduction,Lon
 
     @Query(value = "SELECT d FROM LeafDeduction d WHERE d.collection.id=?1")
     List<LeafDeduction> getDeductionByCollection(long id);
+
+    @Query(value = "SELECT new com.designCenter.designCenter.dto.collections.BasicDeductionResDto(d.id, d.trDate, d.gross, d.deduct, d.type)  FROM LeafDeduction d WHERE d.trYear=?1 AND d.trMonth=?2")
+    List<BasicDeductionResDto> getDeductionOfMonth(int currentYear, int currentMonth);
 }

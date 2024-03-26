@@ -53,6 +53,12 @@ public class CollectionController {
         return collectionService.getCollectionDataInLastTwoMonth(regNo);
     }
 
+    @GetMapping(value = "/deduction/two-month")
+    public ResponseEntity<?> getDeductionDataInLastTwoMonth(@RequestParam long regNo){
+        log.info("Get all basic deduction Data in last Two month of RegisterNumber:{}",regNo);
+        return collectionService.getDeductionDataInLastTwoMonth(regNo);
+    }
+
 
 
 
