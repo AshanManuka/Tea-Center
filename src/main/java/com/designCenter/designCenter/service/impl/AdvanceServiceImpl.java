@@ -2,6 +2,10 @@ package com.designCenter.designCenter.service.impl;
 
 import com.designCenter.designCenter.dto.advance.AdvanceReqDto;
 import com.designCenter.designCenter.dto.advance.AdvanceResDto;
+import com.designCenter.designCenter.dto.advance.BasicAdvanceResDto;
+import com.designCenter.designCenter.dto.advance.TwoMonthAdvanceResDto;
+import com.designCenter.designCenter.dto.collections.BasicDeductionResDto;
+import com.designCenter.designCenter.dto.collections.TwoMonthDeductionResDto;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.customer.BriefRecordResDto;
 import com.designCenter.designCenter.dto.customer.CustomerResDto;
@@ -84,7 +88,16 @@ public class AdvanceServiceImpl implements AdvanceService {
         if(customer == null){
             return ResponseEntity.ok(new CommonResponse<>(false, "No User found..!"));
         }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(reqDto.getEffectedDate());
+
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
         Advance advance = modelMapper.map(reqDto,Advance.class);
+        advance.setTrMonth(currentMonth);
+        advance.setTrYear(currentYear);
         advanceRepository.save(advance);
         if(reqDto.getTrType().equals(TrType.FERTILIZER)){
             //devide in to installment
@@ -128,6 +141,39 @@ public class AdvanceServiceImpl implements AdvanceService {
         }
 
     }
+
+    @Override
+    public ResponseEntity<?> getAdvanceInTwoMonth(long regNo) {
+        log.info("Searching customer RegNum:{} is exists",regNo);
+        Customer customer = customerRepository.findByRegisterNumber(regNo);
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
+        log.info("Getting all Advance data in last Two month of RegisterNumber:{}",regNo);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        List<BasicAdvanceResDto> currentMonthData = advanceRepository.getAdvanceOfMonth(currentYear,currentMonth);
+        List<BasicAdvanceResDto> lastMonthData = new ArrayList<>();
+        if(currentMonth == 1){
+            lastMonthData = advanceRepository.getAdvanceOfMonth(currentYear - 1,12);
+        }else{
+            lastMonthData = advanceRepository.getAdvanceOfMonth(currentYear,currentMonth-1);
+        }
+
+        TwoMonthAdvanceResDto response = new TwoMonthAdvanceResDto(customer.getRegisterNumber(),currentMonthData, lastMonthData);
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
+
+
+
+
+    }
+
+
 
 
 }

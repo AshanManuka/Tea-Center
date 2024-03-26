@@ -41,6 +41,14 @@ public class AdvanceController {
         return advanceService.deleteSingleAdvanceRecord(id);
     }
 
+    @GetMapping(value = "/two-month")
+    public ResponseEntity<?> getAdvanceDataInTwoMonth(@RequestParam long regNo){
+        log.info("Get advance details in Two Month of registerNumber:{}",regNo);
+        return advanceService.getAdvanceInTwoMonth(regNo);
+    }
+
+
+
 
 
 

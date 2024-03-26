@@ -14,4 +14,6 @@ public interface AdvanceService {
     ResponseEntity<?> getTodayAdvanceDetails(long regNo, Date issueDate);
 
     ResponseEntity<?> deleteSingleAdvanceRecord(long id);
+
+    ResponseEntity<?> getAdvanceInTwoMonth(long regNo);
 }

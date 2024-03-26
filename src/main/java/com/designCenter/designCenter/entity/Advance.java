@@ -28,8 +28,8 @@ public class Advance {
     @Enumerated(value = EnumType.STRING)
     private TrType trType;
 //    private String issueMonth;
-//    private int trMonth;
-//    private int trYear;
+    private int trMonth;
+    private int trYear;
 
 
 
