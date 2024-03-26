@@ -47,6 +47,12 @@ public class AdvanceController {
         return advanceService.getAdvanceInTwoMonth(regNo);
     }
 
+    @GetMapping(value = "/all-by-date")
+    public ResponseEntity<?> getAllAdvanceDetailsByDate(@RequestParam Date issueDate){
+        log.info("Get advance details by date:{}",issueDate);
+        return advanceService.getAdvanceDetailByDate(issueDate);
+    }
+
 
 
 

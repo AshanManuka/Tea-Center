@@ -168,12 +168,22 @@ public class AdvanceServiceImpl implements AdvanceService {
         TwoMonthAdvanceResDto response = new TwoMonthAdvanceResDto(customer.getRegisterNumber(),currentMonthData, lastMonthData);
         return ResponseEntity.ok(new CommonResponse<>(true, response));
 
-
-
-
     }
 
+    @Override
+    public ResponseEntity<?> getAdvanceDetailByDate(Date issueDate) {
+        log.info("Getting advance details by date: {}",issueDate);
+        List<Advance> responseList = advanceRepository.getAdvanceByDate(issueDate);
+        if(!responseList.isEmpty()){
+            List<BasicAdvanceResDto> response = responseList
+                    .stream()
+                    .map(advance -> modelMapper.map(advance,BasicAdvanceResDto.class))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(new CommonResponse<>(true, response));
+        }
 
+        return ResponseEntity.ok(new CommonResponse<>(true, "Empty Result"));
+    }
 
 
 }

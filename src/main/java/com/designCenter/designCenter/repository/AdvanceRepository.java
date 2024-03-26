@@ -21,4 +21,7 @@ public interface AdvanceRepository extends JpaRepository<Advance,Long> {
 
     @Query(value = "SELECT new com.designCenter.designCenter.dto.advance.BasicAdvanceResDto(a.id, a.effectedDate, a.route, a.amount, a.trType) FROM Advance a WHERE a.trYear=?1 AND a.trMonth=?2")
     List<BasicAdvanceResDto> getAdvanceOfMonth(int currentYear, int currentMonth);
+
+    @Query(value = "SELECT * FROM advance a WHERE DATE(issue_date)=DATE(?1)",nativeQuery=true)
+    List<Advance> getAdvanceByDate(Date issueDate);
 }
