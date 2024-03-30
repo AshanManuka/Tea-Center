@@ -35,12 +35,13 @@ public class CustomerServiceImpl implements CustomerService {
                 .address(requestDto.getAddress())
                 .name(requestDto.getName())
                 .nic(requestDto.getNic())
-                .registerNumber(requestDto.getRegisterNumber())
                 .mobile(requestDto.getMobile())
                 .updated(new Date())
                 .build();
 
         customer = customerRepository.save(customer);
+        customer.setRegisterNumber(customer.getId());
+        customerRepository.save(customer);
         return modelMapper.map(customer, CustomerResDto.class);
 
 //        if(!requestDto.getNic().isEmpty() && !requestDto.getMobile().isEmpty() && !requestDto.getMobile().isEmpty()){

@@ -8,7 +8,6 @@ import lombok.*;
 @Setter
 @ToString
 public class CustomerReqDto {
-    private Long registerNumber;
     private String name;
     private String nic;
     private String mobile;

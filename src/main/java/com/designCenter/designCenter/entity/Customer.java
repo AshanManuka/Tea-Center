@@ -18,7 +18,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private Long registerNumber;
 
     private String name;
