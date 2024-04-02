@@ -14,6 +14,9 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
     @Query(value = "SELECT c FROM Customer c WHERE c.nic LIKE %?1% GROUP BY c.id")
     List<Customer> searchByNic(String keyword);
 
+    @Query(value = "SELECT c FROM Customer c WHERE c.name LIKE %?1% GROUP BY c.id")
+    List<Customer> searchByName(String keyword);
+
     @Query(value = "SELECT c FROM Customer c WHERE c.mobile LIKE %?1% GROUP BY c.id")
     List<Customer> searchByMobile(String keyword);
 

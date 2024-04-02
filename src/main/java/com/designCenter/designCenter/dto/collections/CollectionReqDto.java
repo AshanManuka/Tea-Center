@@ -26,7 +26,7 @@ public class CollectionReqDto {
     private String vehicle;
     private double trRate;
     private double gross;
-    private double netGross;
+    private double netWeight;
     private String ws;
     private double incRate;
     private double commissionRate;

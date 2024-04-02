@@ -17,13 +17,13 @@ public interface CollectionRepository extends JpaRepository<Collection,Long> {
     @Query(value ="SELECT c FROM Collection c WHERE c.id=?1")
     Collection getCollectionById(long collectionId);
 
-    @Query(value = "SELECT c.netGross FROM Collection c WHERE c.trYear=:currentYear AND c.trMonth=:currentMonth")
+    @Query(value = "SELECT c.netWeight FROM Collection c WHERE c.trYear=:currentYear AND c.trMonth=:currentMonth")
     List<Double> getAllNetGrossByMonth(@Param("currentYear") int currentYear, @Param("currentMonth") int currentMonth);
 
     @Query(value = "SELECT * FROM collection WHERE DATE(tr_date)=DATE(?1)", nativeQuery=true)
     List<Collection> getTodayAllCollection(Date today);
 
-    @Query(value = "SELECT c.netGross FROM Collection c WHERE c.trYear=?1 AND c.trMonth=?2")
+    @Query(value = "SELECT c.netWeight FROM Collection c WHERE c.trYear=?1 AND c.trMonth=?2")
     List<Double> getWeightOfMonth(int currentYear, int currentMonth);
 
     @Query(value = "SELECT new com.designCenter.designCenter.dto.collections.SimpleCollectionResDto(c.id, c.trDate, c.qty, c.grade) FROM Collection c WHERE c.trYear=?1 AND c.trMonth=?2")

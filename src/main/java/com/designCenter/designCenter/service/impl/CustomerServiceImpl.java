@@ -66,10 +66,13 @@ public class CustomerServiceImpl implements CustomerService {
     public ResponseEntity<?> searchByKeyword(String keyword, SearchType type) {
         List<Customer> customerList = new ArrayList<>();
         log.info("Searching Customers by Keyword:{}",type);
-        if(type.equals(SearchType.NIC)){
-            customerList = customerRepository.searchByNic(keyword);
+        if(type.equals(SearchType.NAME)){
+            customerList = customerRepository.searchByName(keyword);
         }else if(type.equals(SearchType.MOBILE)){
             customerList = customerRepository.searchByMobile(keyword);
+        }
+        else if(type.equals(SearchType.NIC)){
+            customerList = customerRepository.searchByNic(keyword);
         }
 
         if(customerList.isEmpty()){

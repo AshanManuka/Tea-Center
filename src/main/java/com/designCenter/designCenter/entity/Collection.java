@@ -32,7 +32,7 @@ public class Collection {
     private String ws;
     private double incRate;
     private double gross;
-    private double netGross;
+    private double netWeight;
     private double commissionRate;
     @Enumerated(value = EnumType.STRING)
     private Grade grade;

@@ -11,8 +11,9 @@ import java.util.Date;
 @ToString
 public class BasicCollectionResDto {
     private Long id;
+    private String name;
     private Long registerNumber;
     private Date trDate;
-    private double netGross;
+    private double netWeight;
 
 }
