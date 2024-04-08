@@ -1,9 +1,11 @@
 package com.designCenter.designCenter.service;
 
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
+import com.designCenter.designCenter.dto.collections.DeductionReqDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
+import java.util.List;
 
 public interface CollectionService {
 
@@ -24,4 +26,5 @@ public interface CollectionService {
     ResponseEntity<?> getCollectionDetailByDate(Date date);
 
     ResponseEntity<?> getDeductionDetailByDate(Date date);
+
 }

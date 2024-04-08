@@ -1,6 +1,7 @@
 package com.designCenter.designCenter.controller;
 
 import com.designCenter.designCenter.dto.collections.CollectionReqDto;
+import com.designCenter.designCenter.dto.collections.DeductionReqDto;
 import com.designCenter.designCenter.service.CollectionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,7 +72,6 @@ public class CollectionController {
         log.info("Get Deduction details by date:{}",date);
         return collectionService.getDeductionDetailByDate(date);
     }
-
 
 
 

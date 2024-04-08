@@ -80,6 +80,7 @@ public class AdvanceServiceImpl implements AdvanceService {
 
     @Override
     public ResponseEntity<?> createAdvance(AdvanceReqDto reqDto) {
+
         log.info("Searching Customer by RegisterNumber:{}",reqDto.getRegisterNumber());
         Customer customer = customerRepository.findByRegisterNumber(reqDto.getRegisterNumber());
         if(customer == null){

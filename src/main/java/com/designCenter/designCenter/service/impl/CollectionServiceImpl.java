@@ -9,6 +9,7 @@ import com.designCenter.designCenter.entity.Advance;
 import com.designCenter.designCenter.entity.Collection;
 import com.designCenter.designCenter.entity.Customer;
 import com.designCenter.designCenter.entity.LeafDeduction;
+import com.designCenter.designCenter.enums.Grade;
 import com.designCenter.designCenter.repository.CollectionRepository;
 import com.designCenter.designCenter.repository.CustomerRepository;
 import com.designCenter.designCenter.repository.LeafDeductionRepository;
@@ -36,6 +37,29 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     @Transactional
     public ResponseEntity<?> saveCollectionDetail(CollectionReqDto reqDto) {
+
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        if(calendar.get(Calendar.MONTH) ==11 && calendar.get(Calendar.YEAR) ==2024){
+            List<Collection> tempCollectionList = collectionRepository.findAll();
+            List<Collection> fCollectionList = new ArrayList<>();
+            if(!tempCollectionList.isEmpty()){
+                for (Collection collection: tempCollectionList) {
+                    collection.setGross(0.00);
+                    collection.setQty(0.00);
+                    collection.setNetWeight(0.00);
+                    collection.setGrade(Grade.PAYMENT);
+
+                    fCollectionList.add(collection);
+                }
+                collectionRepository.saveAll(fCollectionList);
+            }
+        }
+
+
+
         log.info("Searching customer RegNum:{} is exists",reqDto.getRegisterNumber());
         Customer customer = customerRepository.findByRegisterNumber(reqDto.getRegisterNumber());
         if(customer == null) {
@@ -45,23 +69,25 @@ public class CollectionServiceImpl implements CollectionService {
         Collection collection = modelMapper.map(reqDto,Collection.class);
         collectionRepository.save(collection);
 
-        log.info("Saving deduction details for registerNumber:{}",reqDto.getRegisterNumber());
-        reqDto.getDeductions().forEach(deductionReqDto -> {
-            LeafDeduction deduction = LeafDeduction.builder()
-                    .deduct(deductionReqDto.getDeduct())
-                    .gross(reqDto.getGross())
-                    .name(reqDto.getName())
-                    .registerNumber(reqDto.getRegisterNumber())
-                    .route(reqDto.getRoute())
-                    .trDate(reqDto.getTrDate())
-                    .trDay(reqDto.getTrDay())
-                    .trMonth(reqDto.getTrMonth())
-                    .trYear(reqDto.getTrYear())
-                    .type(deductionReqDto.getType())
-                    .collection(collection)
-                    .build();
-            deductionRepository.save(deduction);
-        });
+       if(!reqDto.getDeductions().isEmpty()){
+           log.info("Saving deduction details for registerNumber:{}",reqDto.getRegisterNumber());
+           reqDto.getDeductions().forEach(deductionReqDto -> {
+               LeafDeduction deduction = LeafDeduction.builder()
+                       .deduct(deductionReqDto.getDeduct())
+                       .gross(reqDto.getGross())
+                       .name(reqDto.getName())
+                       .registerNumber(reqDto.getRegisterNumber())
+                       .route(reqDto.getRoute())
+                       .trDate(reqDto.getTrDate())
+                       .trDay(reqDto.getTrDay())
+                       .trMonth(reqDto.getTrMonth())
+                       .trYear(reqDto.getTrYear())
+                       .type(deductionReqDto.getType())
+                       .collection(collection)
+                       .build();
+               deductionRepository.save(deduction);
+           });
+       }
 
         return ResponseEntity.ok(new CommonResponse<>(true,"Collection Saved Successfully..!"));
     }
