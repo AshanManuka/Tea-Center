@@ -13,6 +13,7 @@ import java.util.Date;
 public class BasicTwoDeductionResDto {
     private long id;
     private long registerNumber;
+    private String name;
     private Date trDate;
     private double gross;
     private int deduct;
