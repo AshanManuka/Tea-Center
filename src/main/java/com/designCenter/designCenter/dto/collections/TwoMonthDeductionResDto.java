@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 public class TwoMonthDeductionResDto {
     private long registerNumber;
+    private String registerName;
     private List<BasicDeductionResDto> currentMonth = new ArrayList<>();
     private List<BasicDeductionResDto> lastMonth = new ArrayList<>();
 }

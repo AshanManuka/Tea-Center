@@ -234,7 +234,7 @@ public class CollectionServiceImpl implements CollectionService {
             lastMonthData = deductionRepository.getDeductionOfMonth(currentYear,currentMonth-1);
         }
 
-        TwoMonthDeductionResDto response = new TwoMonthDeductionResDto(customer.getRegisterNumber(), currentMonthData, lastMonthData);
+        TwoMonthDeductionResDto response = new TwoMonthDeductionResDto(customer.getRegisterNumber(),customer.getName(), currentMonthData, lastMonthData);
         return ResponseEntity.ok(new CommonResponse<>(true, response));
 
 
