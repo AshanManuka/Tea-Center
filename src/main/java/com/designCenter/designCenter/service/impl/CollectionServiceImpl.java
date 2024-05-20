@@ -5,13 +5,13 @@ import com.designCenter.designCenter.dto.advance.BasicAdvanceResDto;
 import com.designCenter.designCenter.dto.collections.*;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
-import com.designCenter.designCenter.entity.Advance;
+import com.designCenter.designCenter.dto.deduction.DeductionReqDto;
+import com.designCenter.designCenter.entity.*;
 import com.designCenter.designCenter.entity.Collection;
-import com.designCenter.designCenter.entity.Customer;
-import com.designCenter.designCenter.entity.LeafDeduction;
 import com.designCenter.designCenter.enums.Grade;
 import com.designCenter.designCenter.repository.CollectionRepository;
 import com.designCenter.designCenter.repository.CustomerRepository;
+import com.designCenter.designCenter.repository.DeductionRepository;
 import com.designCenter.designCenter.repository.LeafDeductionRepository;
 import com.designCenter.designCenter.service.CollectionService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,7 @@ public class CollectionServiceImpl implements CollectionService {
     private final CollectionRepository collectionRepository;
     private final LeafDeductionRepository deductionRepository;
     private final CustomerRepository customerRepository;
+    private final DeductionRepository basicDeductionRepository;
 
     @Override
     @Transactional
@@ -268,6 +269,29 @@ public class CollectionServiceImpl implements CollectionService {
         }
 
         return ResponseEntity.ok(new CommonResponse<>(true, "Empty Result"));
+    }
+
+    @Override
+    public ResponseEntity<?> saveDeductionDetail(DeductionReqDto reqDto) {
+        log.info("Searching customer RegNum:{} is exists",reqDto.getRegisterNumber());
+        Customer customer = customerRepository.findByRegisterNumber(reqDto.getRegisterNumber());
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
+
+        Deduction deduction = modelMapper.map(reqDto,Deduction.class);
+        Deduction savedDeduction = basicDeductionRepository.save(deduction);
+
+        return ResponseEntity.ok(new CommonResponse<>(true, "Deduction Saved Successfully..!"));
+
+
+    }
+
+    @Override
+    public ResponseEntity<?> getDeductionByDate(Date date) {
+        log.info("get Deduction by date:{}", date);
+        List<Deduction> deductionList = basicDeductionRepository.getDeductionByDate(date);
+        return ResponseEntity.ok(new CommonResponse<>(true, deductionList));
     }
 
 
