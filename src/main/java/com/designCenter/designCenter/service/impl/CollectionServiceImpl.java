@@ -6,6 +6,7 @@ import com.designCenter.designCenter.dto.collections.*;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
 import com.designCenter.designCenter.dto.deduction.DeductionReqDto;
+import com.designCenter.designCenter.dto.deduction.LastTwoMonthDeductionResDto;
 import com.designCenter.designCenter.entity.*;
 import com.designCenter.designCenter.entity.Collection;
 import com.designCenter.designCenter.enums.Grade;
@@ -21,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -279,7 +282,15 @@ public class CollectionServiceImpl implements CollectionService {
             return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
         }
 
+        LocalDate localDate = reqDto.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Extract year, month, and day
+        int year = localDate.getYear();
+        int month = localDate.getMonthValue();
+
         Deduction deduction = modelMapper.map(reqDto,Deduction.class);
+        deduction.setMonth(month);
+        deduction.setYear(year);
         Deduction savedDeduction = basicDeductionRepository.save(deduction);
 
         return ResponseEntity.ok(new CommonResponse<>(true, "Deduction Saved Successfully..!"));
@@ -292,6 +303,35 @@ public class CollectionServiceImpl implements CollectionService {
         log.info("get Deduction by date:{}", date);
         List<Deduction> deductionList = basicDeductionRepository.getDeductionByDate(date);
         return ResponseEntity.ok(new CommonResponse<>(true, deductionList));
+    }
+
+    @Override
+    public ResponseEntity<?> getLastTwoMonthDeductionByRegNumber(Long regNumber) {
+        log.info("Searching customer RegNum:{} is exists",regNumber);
+        Customer customer = customerRepository.findByRegisterNumber(regNumber);
+        if(customer == null) {
+            return ResponseEntity.ok(new CommonResponse<>(false, "No user found with the provided registration number"));
+        }
+        log.info("Getting all deduction data in last Two month of RegisterNumber:{}",regNumber);
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        List<com.designCenter.designCenter.dto.deduction.DeductionResDto> currentMonthData = basicDeductionRepository.getDeductionOfMonth(currentYear,currentMonth);
+        List<com.designCenter.designCenter.dto.deduction.DeductionResDto> lastMonthData = new ArrayList<>();
+        if(currentMonth == 1){
+            lastMonthData = basicDeductionRepository.getDeductionOfMonth(currentYear - 1,12);
+        }else{
+            lastMonthData = basicDeductionRepository.getDeductionOfMonth(currentYear,currentMonth-1);
+        }
+
+        LastTwoMonthDeductionResDto response = new LastTwoMonthDeductionResDto(customer.getRegisterNumber(),customer.getName(), currentMonthData, lastMonthData);
+        return ResponseEntity.ok(new CommonResponse<>(true, response));
+
+
     }
 
 

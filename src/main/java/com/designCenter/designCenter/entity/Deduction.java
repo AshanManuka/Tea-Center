@@ -18,6 +18,8 @@ public class Deduction {
     private long id;
 
     private Date date;
+    private int month;
+    private int year;
     private long registerNumber;
     @Enumerated(value = EnumType.STRING)
     private DeductionType type;

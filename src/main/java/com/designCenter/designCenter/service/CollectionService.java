@@ -30,4 +30,6 @@ public interface CollectionService {
     ResponseEntity<?> saveDeductionDetail(DeductionReqDto reqDto);
 
     ResponseEntity<?> getDeductionByDate(Date date);
+
+    ResponseEntity<?> getLastTwoMonthDeductionByRegNumber(Long regNumber);
 }

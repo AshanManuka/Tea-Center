@@ -28,4 +28,10 @@ public class DeductionController {
         log.info("get Deduction by date:{}", date);
         return collectionService.getDeductionByDate(date);
     }
+
+    @GetMapping(value = "by-regNo")
+    public ResponseEntity<?> getLastTwoMonthDeduction(@RequestParam Long regNumber){
+        log.info("get last Two Month Deduction by registerNumber:{}", regNumber);
+        return collectionService.getLastTwoMonthDeductionByRegNumber(regNumber);
+    }
 }
