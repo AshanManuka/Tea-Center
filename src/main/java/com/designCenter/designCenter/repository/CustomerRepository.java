@@ -23,4 +23,6 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
     @Query(value = "SELECT c FROM Customer c WHERE c.id=?1")
     Customer getCustomerById(long id);
 
+    @Query(value = "SELECT c FROM Customer c")
+    List<Customer> getAllCustomer();
 }

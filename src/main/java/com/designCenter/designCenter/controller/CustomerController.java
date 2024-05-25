@@ -38,6 +38,12 @@ public class CustomerController {
         return customerService.searchByRegisterNumber(regNo);
     }
 
+    @GetMapping(value = "/all")
+    public ResponseEntity<?> getAllCustomer(){
+        log.info("Get all Customers");
+        return customerService.getAllCustomer();
+    }
+
     @PostMapping
     public ResponseEntity<?> saveCustomer(@RequestBody CustomerReqDto requestDto){
         log.info("Saving new customer Details NIC:{}",requestDto.getNic());

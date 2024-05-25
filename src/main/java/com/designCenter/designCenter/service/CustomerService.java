@@ -16,4 +16,6 @@ public interface CustomerService {
     ResponseEntity<?> searchByRegisterNumber(long regNo);
 
     ResponseEntity<?> searchById(long id);
+
+    ResponseEntity<?> getAllCustomer();
 }

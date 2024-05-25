@@ -110,5 +110,21 @@ public class CustomerServiceImpl implements CustomerService {
         return ResponseEntity.ok(new CommonResponse<>(true, response));
     }
 
+    @Override
+    public ResponseEntity<?> getAllCustomer() {
+        log.info("Searching Customers");
+        List<Customer> customerList = customerRepository.getAllCustomer();
+        if(customerList.isEmpty()){
+            return ResponseEntity.ok(new CommonResponse<>(false,"Can't find any customer..!"));
+        }
+
+        List<CustomerResDto> responseList = customerList
+                .stream()
+                .map(customer ->modelMapper.map(customer,CustomerResDto.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new CommonResponse<>(true,responseList));
+    }
+
 
 }
