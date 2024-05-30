@@ -3,6 +3,7 @@ package com.designCenter.designCenter.controller;
 import com.designCenter.designCenter.dto.authUser.AuthenticationRequest;
 import com.designCenter.designCenter.dto.authUser.AuthenticationResponse;
 import com.designCenter.designCenter.dto.common.CommonResponse;
+import com.designCenter.designCenter.service.CustomerService;
 import com.designCenter.designCenter.service.MyUserDetailsService;
 import com.designCenter.designCenter.util.JwlUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class PublicController {
     private final AuthenticationManager authenticationManager;
     private final MyUserDetailsService userDetailsService;
     private final JwlUtil jwtTokenUtil;
+    private final CustomerService customerService;
 
 
     @GetMapping(value= "/open")
@@ -47,6 +49,12 @@ public class PublicController {
 
         return ResponseEntity.ok(new CommonResponse<>(true,new AuthenticationResponse(jwt)));
 
+    }
+
+    @GetMapping(value = "/all")
+    public ResponseEntity<?> getAllCustomer(){
+        log.info("Get all Customers");
+        return customerService.getAllCustomer();
     }
 
 }

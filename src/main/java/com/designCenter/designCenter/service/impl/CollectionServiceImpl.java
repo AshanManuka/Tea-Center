@@ -5,6 +5,7 @@ import com.designCenter.designCenter.dto.advance.BasicAdvanceResDto;
 import com.designCenter.designCenter.dto.collections.*;
 import com.designCenter.designCenter.dto.common.CommonResponse;
 import com.designCenter.designCenter.dto.common.CustomServiceException;
+import com.designCenter.designCenter.dto.deduction.BasicDeducResDto;
 import com.designCenter.designCenter.dto.deduction.DeductionReqDto;
 import com.designCenter.designCenter.dto.deduction.LastTwoMonthDeductionResDto;
 import com.designCenter.designCenter.entity.*;
@@ -300,10 +301,31 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public ResponseEntity<?> getDeductionByDate(Date date) {
-        log.info("get Deduction by date:{}", date);
+        log.info("get Deduction by date: {}", date);
         List<Deduction> deductionList = basicDeductionRepository.getDeductionByDate(date);
-        return ResponseEntity.ok(new CommonResponse<>(true, deductionList));
+
+        if (!deductionList.isEmpty()) {
+            List<BasicDeducResDto> response = deductionList
+                    .stream()
+                    .map(deduction -> {
+                        // Retrieve customer information by register number
+                        Customer customer = customerRepository.findByRegisterNumber(deduction.getRegisterNumber());
+
+                        // Map Deduction to BasicDeducResDto
+                        BasicDeducResDto dto = modelMapper.map(deduction, BasicDeducResDto.class);
+
+                        // Set customer information in the DTO
+                        dto.setName(customer.getName());
+
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(new CommonResponse<>(true, response));
+        }
+
+        return ResponseEntity.ok(new CommonResponse<>(true, "Empty Result"));
     }
+
 
     @Override
     public ResponseEntity<?> getLastTwoMonthDeductionByRegNumber(Long regNumber) {
