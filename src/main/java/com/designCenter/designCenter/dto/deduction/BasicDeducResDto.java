@@ -19,5 +19,6 @@ public class BasicDeducResDto {
     private long registerNumber;
     private String name;
     private DeductionType type;
+    private double amount;
 
 }
